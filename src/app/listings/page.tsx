@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
+import React, { useEffect, useState } from "react";
 
 const sampleProperties = [
   {
@@ -30,53 +31,137 @@ const sampleProperties = [
   },
 ];
 
+const listingFilters = ["All", "Marrakech", "Casablanca", "Rabat", "Villa", "Riad", "Apartment"];
+
+type SellerListing = {
+  id?: string | number;
+  title?: string;
+  locationText?: string;
+  location?: string;
+  price?: string;
+  images?: string[];
+  description?: string;
+  seller?: unknown;
+};
+
+type DisplayListing = {
+  id: string;
+  title: string;
+  location: string;
+  price: string;
+  image: string;
+  description: string;
+  seller: unknown;
+};
+
 export default function Listings() {
-  const [sellerListings, setSellerListings] = useState<any[]>([]);
+  const [sellerListings, setSellerListings] = useState<SellerListing[]>([]);
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem("immo_seller_listings") || "[]";
-      const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed)) setSellerListings(parsed);
-    } catch (e) {
-      console.error("Failed to read seller listings", e);
-    }
+    const timeoutId = window.setTimeout(() => {
+      try {
+        const raw = localStorage.getItem("immo_seller_listings") || "[]";
+        const parsed: unknown = JSON.parse(raw);
+        if (Array.isArray(parsed)) {
+          setSellerListings(parsed as SellerListing[]);
+        }
+      } catch (error) {
+        console.error("Failed to read seller listings", error);
+      }
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, []);
 
-  const combined = [...sellerListings.map((s) => ({
-    id: s.id || `seller-${Math.random()}`,
-    title: s.title || "Annonce",
-    location: s.locationText || s.location || "-",
-    price: s.price || "-",
-    image: (s.images && s.images[0]) || "https://via.placeholder.com/600x400",
-    description: s.description || "",
-    seller: s.seller || null,
-  })), ...sampleProperties];
+  const combined: DisplayListing[] = [
+    ...sellerListings.map((listing, index) => ({
+      id: String(listing.id ?? `seller-${index}`),
+      title: listing.title || "Annonce",
+      location: listing.locationText || listing.location || "-",
+      price: listing.price || "-",
+      image:
+        listing.images?.[0] ||
+        "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+      description: listing.description || "",
+      seller: listing.seller || null,
+    })),
+    ...sampleProperties,
+  ];
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black px-4 py-16">
-      <div className="max-w-6xl mx-auto mb-8 flex items-center justify-between">
-        <h1 className="text-3xl md:text-5xl font-bold text-blue-800 dark:text-blue-200">Annonces Immobilières</h1>
-        <div className="text-sm text-zinc-600">Annonces locales: {sellerListings.length}</div>
-      </div>
-  <div className="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
-        {combined.map((property) => (
-          <Link key={property.id} href={`/listings/${property.id}`} className="hover:shadow-lg transition">
-            <div className="bg-zinc-100 dark:bg-zinc-800 rounded-lg shadow-md overflow-hidden flex flex-col">
-              <img src={property.image} alt={property.title} className="h-48 w-full object-cover" />
-              <div className="p-6 flex-1 flex flex-col">
-                <div className="flex items-start justify-between">
-                  <h2 className="text-xl font-semibold text-blue-700 dark:text-blue-300 mb-2">{property.title}</h2>
-                  {('seller' in property && property.seller) && <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Annonce réelle</span>}
-                </div>
-                <p className="text-zinc-600 dark:text-zinc-400 mb-1">{property.location}</p>
-                <p className="text-blue-600 dark:text-blue-400 font-bold mb-2">{property.price}</p>
-                <p className="text-zinc-700 dark:text-zinc-300 flex-1">{property.description}</p>
+    <main className="bg-[radial-gradient(circle_at_top_left,rgba(15,23,42,0.08),transparent_34%),linear-gradient(180deg,#f8fafc_0%,#ffffff_52%,#eef4f8_100%)] text-slate-950">
+      <section className="mx-auto w-full max-w-7xl px-4 pb-6 pt-12 sm:px-6 lg:px-8 lg:pt-16">
+        <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+          <div className="max-w-2xl">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-slate-500">Annonces</p>
+            <h1 className="mt-5 max-w-[12ch] text-5xl font-semibold tracking-tight text-slate-950 sm:text-6xl lg:text-7xl">
+              Browse Moroccan homes with clearer filters.
+            </h1>
+            <p className="mt-5 max-w-[60ch] text-base leading-7 text-slate-600 sm:text-lg">
+              Search curated riads, apartments, and villas with a more premium reading experience. Local seller listings appear alongside sample inventory so the page always feels populated.
+            </p>
+          </div>
+
+          <div className="grid gap-4 rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_20px_50px_rgba(15,23,42,0.08)] sm:grid-cols-3">
+            {[
+              { value: String(combined.length), label: "properties" },
+              { value: String(sellerListings.length), label: "local listings" },
+              { value: "24h", label: "fresh updates" },
+            ].map((stat) => (
+              <div key={stat.label} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                <p className="text-2xl font-semibold tracking-tight text-slate-950">{stat.value}</p>
+                <p className="mt-1 text-sm text-slate-500">{stat.label}</p>
               </div>
-            </div>
-          </Link>
-        ))}
-      </div>
-    </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto w-full max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
+        <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-[0_20px_50px_rgba(15,23,42,0.06)] sm:p-5">
+          <div className="flex flex-wrap gap-2">
+            {listingFilters.map((filter, index) => (
+              <button
+                key={filter}
+                className={`rounded-full px-4 py-2 text-sm font-medium transition ${index === 0 ? "bg-slate-950 text-white" : "border border-slate-200 bg-slate-50 text-slate-600 hover:border-slate-300 hover:bg-white hover:text-slate-950"}`}
+              >
+                {filter}
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto w-full max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
+        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          {combined.map((property) => (
+            <Link key={property.id} href={`/listings/${property.id}`} className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_20px_50px_rgba(15,23,42,0.08)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_28px_60px_rgba(15,23,42,0.12)]">
+              <div className="relative">
+                <Image src={property.image} alt={property.title} width={1200} height={800} className="h-56 w-full object-cover transition duration-500 group-hover:scale-[1.03]" unoptimized />
+                {('seller' in property && property.seller) && (
+                  <span className="absolute left-4 top-4 rounded-full bg-emerald-500 px-3 py-1.5 text-[11px] font-semibold text-white shadow-lg">
+                    Annonce réelle
+                  </span>
+                )}
+              </div>
+              <div className="space-y-4 p-5">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <h2 className="text-xl font-semibold tracking-tight text-slate-950">{property.title}</h2>
+                    <p className="mt-1 text-sm text-slate-500">{property.location}</p>
+                  </div>
+                  <span className="text-lg font-semibold tracking-tight text-slate-950">{property.price}</span>
+                </div>
+                <p className="text-sm leading-6 text-slate-600">{property.description}</p>
+                <div className="flex items-center justify-between border-t border-slate-200 pt-4 text-sm text-slate-500">
+                  <span>View property</span>
+                  <span className="text-slate-900">Open details</span>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+    </main>
   );
 }
