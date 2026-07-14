@@ -12,6 +12,7 @@ const sampleProperties = [
     price: "2 500 000 MAD",
     image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
     description: "Magnifique riad rénové avec patio, 4 chambres, terrasse panoramique et piscine. Idéal pour maison d’hôtes ou résidence familiale.",
+    seller: null,
   },
   {
     id: "sample-2",
@@ -20,6 +21,7 @@ const sampleProperties = [
     price: "1 800 000 MAD",
     image: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80",
     description: "Appartement lumineux de 3 pièces, balcon vue sur l’océan, cuisine équipée, résidence sécurisée avec parking.",
+    seller: null,
   },
   {
     id: "sample-3",
@@ -28,6 +30,7 @@ const sampleProperties = [
     price: "6 500 000 MAD",
     image: "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=600&q=80",
     description: "Superbe villa contemporaine, 5 chambres, grand jardin arboré, piscine privée, finitions haut de gamme.",
+    seller: null,
   },
 ];
 
@@ -138,7 +141,7 @@ export default function Listings() {
             <Link key={property.id} href={`/listings/${property.id}`} className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_20px_50px_rgba(15,23,42,0.08)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_28px_60px_rgba(15,23,42,0.12)]">
               <div className="relative">
                 <Image src={property.image} alt={property.title} width={1200} height={800} className="h-56 w-full object-cover transition duration-500 group-hover:scale-[1.03]" unoptimized />
-                {('seller' in property && property.seller) && (
+                {Boolean('seller' in property && property.seller) && (
                   <span className="absolute left-4 top-4 rounded-full bg-emerald-500 px-3 py-1.5 text-[11px] font-semibold text-white shadow-lg">
                     Annonce réelle
                   </span>
