@@ -151,98 +151,180 @@ export default function SellerAddPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black text-zinc-900 dark:text-zinc-100 p-6">
-      <div className="max-w-5xl mx-auto">
-        <div className="bg-white dark:bg-zinc-900 rounded-lg shadow-md overflow-hidden">
-          <div className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h1 className="text-2xl font-bold text-blue-800 dark:text-blue-200">Publier une annonce</h1>
-                <p className="text-sm text-zinc-600 dark:text-zinc-400">Complétez le formulaire ci-dessous. Les champs marqués d'une * sont obligatoires.</p>
-              </div>
-              <div className="text-sm text-zinc-500">Étape 1 / 2</div>
+    <main className="min-h-[100dvh] bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.12),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(15,23,42,0.08),transparent_30%),linear-gradient(180deg,#f8fafc_0%,#eef4f8_100%)] text-slate-950">
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+        <div className="rounded-[2rem] border border-white/70 bg-white/70 p-6 shadow-[0_24px_70px_rgba(15,23,42,0.12)] backdrop-blur sm:p-8 lg:p-10">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-2xl space-y-4">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-emerald-700">Seller listing form</p>
+              <h1 className="text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">Publish a listing with clearer details.</h1>
+              <p className="max-w-[62ch] text-base leading-7 text-slate-600 sm:text-lg">
+                Add the essentials first: title, price, location, photos, and map position. The rest can be refined before sharing.
+              </p>
             </div>
 
-            <form onSubmit={saveListing} className="grid grid-cols-1 gap-6">
-              <section className="grid gap-3">
-                <label className="text-sm font-medium">Titre de l'annonce *</label>
-                <input value={title} onChange={(e) => setTitle(e.target.value)} required placeholder="Ex: Riad rénové à Marrakech" className="p-3 rounded border border-zinc-200 dark:border-zinc-700 bg-transparent" />
+            <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600">
+              Step 1 / 2
+            </div>
+          </div>
+
+          <form onSubmit={saveListing} className="mt-8 grid gap-8 lg:grid-cols-[1fr_0.9fr]">
+            <div className="space-y-6">
+              <section className="grid gap-2">
+                <label className="text-sm font-medium text-slate-900">Listing title *</label>
+                <input
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  required
+                  placeholder="Example: Renovated riad in Marrakech"
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-emerald-400 focus:bg-white focus:ring-4 focus:ring-emerald-100"
+                />
               </section>
 
-              <section className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium">Prix</label>
-                  <input value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Ex: 1 200 000 MAD" className="p-3 rounded border border-zinc-200 dark:border-zinc-700 bg-transparent w-full" />
+              <section className="grid gap-4 sm:grid-cols-2">
+                <div className="grid gap-2">
+                  <label className="text-sm font-medium text-slate-900">Price</label>
+                  <input
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                    placeholder="Example: 1 200 000 MAD"
+                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-emerald-400 focus:bg-white focus:ring-4 focus:ring-emerald-100"
+                  />
                 </div>
-                <div>
-                  <label className="text-sm font-medium">Adresse / Quartier</label>
-                  <input value={locationText} onChange={(e) => setLocationText(e.target.value)} placeholder="Ex: Médina, Marrakech" className="p-3 rounded border border-zinc-200 dark:border-zinc-700 bg-transparent w-full" />
-                </div>
-              </section>
-
-              <section className="grid md:grid-cols-3 gap-4">
-                <div>
-                  <label className="text-sm font-medium">Téléphone du vendeur</label>
-                  <input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="Ex: +2126xxxxxxxx" className="p-3 rounded border border-zinc-200 dark:border-zinc-700 bg-transparent w-full" />
-                </div>
-                <div>
-                  <label className="text-sm font-medium">Chambres</label>
-                  <input value={bedrooms} onChange={(e) => setBedrooms(e.target.value)} placeholder="Ex: 3" className="p-3 rounded border border-zinc-200 dark:border-zinc-700 bg-transparent w-full" />
-                </div>
-                <div>
-                  <label className="text-sm font-medium">Salles de bain</label>
-                  <input value={bathrooms} onChange={(e) => setBathrooms(e.target.value)} placeholder="Ex: 2" className="p-3 rounded border border-zinc-200 dark:border-zinc-700 bg-transparent w-full" />
-                </div>
-              </section>
-
-              <section className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium">Suites parentales</label>
-                  <input value={suites} onChange={(e) => setSuites(e.target.value)} placeholder="Ex: 1" className="p-3 rounded border border-zinc-200 dark:border-zinc-700 bg-transparent w-full" />
-                </div>
-                <div>
-                  <label className="text-sm font-medium">Balcons</label>
-                  <input value={balconies} onChange={(e) => setBalconies(e.target.value)} placeholder="Ex: 2" className="p-3 rounded border border-zinc-200 dark:border-zinc-700 bg-transparent w-full" />
+                <div className="grid gap-2">
+                  <label className="text-sm font-medium text-slate-900">District / address</label>
+                  <input
+                    value={locationText}
+                    onChange={(e) => setLocationText(e.target.value)}
+                    placeholder="Example: Médina, Marrakech"
+                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-emerald-400 focus:bg-white focus:ring-4 focus:ring-emerald-100"
+                  />
                 </div>
               </section>
 
-              <section>
-                <label className="text-sm font-medium">Description *</label>
-                <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={5} placeholder="Décrivez le bien, les points forts, la surface, etc." className="p-3 rounded border border-zinc-200 dark:border-zinc-700 bg-transparent w-full" />
+              <section className="grid gap-4 sm:grid-cols-3">
+                <div className="grid gap-2">
+                  <label className="text-sm font-medium text-slate-900">Seller phone</label>
+                  <input
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="+2126xxxxxxxx"
+                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-emerald-400 focus:bg-white focus:ring-4 focus:ring-emerald-100"
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <label className="text-sm font-medium text-slate-900">Bedrooms</label>
+                  <input
+                    value={bedrooms}
+                    onChange={(e) => setBedrooms(e.target.value)}
+                    placeholder="3"
+                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-emerald-400 focus:bg-white focus:ring-4 focus:ring-emerald-100"
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <label className="text-sm font-medium text-slate-900">Bathrooms</label>
+                  <input
+                    value={bathrooms}
+                    onChange={(e) => setBathrooms(e.target.value)}
+                    placeholder="2"
+                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-emerald-400 focus:bg-white focus:ring-4 focus:ring-emerald-100"
+                  />
+                </div>
               </section>
 
-              <section>
-                <label className="text-sm font-medium">Photos</label>
-                <div className="mt-2 flex items-center gap-3">
+              <section className="grid gap-4 sm:grid-cols-2">
+                <div className="grid gap-2">
+                  <label className="text-sm font-medium text-slate-900">Suites</label>
+                  <input
+                    value={suites}
+                    onChange={(e) => setSuites(e.target.value)}
+                    placeholder="1"
+                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-emerald-400 focus:bg-white focus:ring-4 focus:ring-emerald-100"
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <label className="text-sm font-medium text-slate-900">Balconies</label>
+                  <input
+                    value={balconies}
+                    onChange={(e) => setBalconies(e.target.value)}
+                    placeholder="2"
+                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-emerald-400 focus:bg-white focus:ring-4 focus:ring-emerald-100"
+                  />
+                </div>
+              </section>
+
+              <section className="grid gap-2">
+                <label className="text-sm font-medium text-slate-900">Description *</label>
+                <textarea
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  rows={6}
+                  placeholder="Describe the property, the layout, the light, the views, and the key selling points."
+                  className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-emerald-400 focus:bg-white focus:ring-4 focus:ring-emerald-100"
+                />
+              </section>
+
+              <div className="flex flex-wrap gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setTitle("");
+                    setPrice("");
+                    setLocationText("");
+                    setDescription("");
+                    setImages([]);
+                    setLatLng(null);
+                  }}
+                  className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+                >
+                  Clear form
+                </button>
+                <button type="submit" className="rounded-2xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800">
+                  Publish listing
+                </button>
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <section className="rounded-[1.75rem] border border-slate-200 bg-white p-5 shadow-[0_18px_40px_rgba(15,23,42,0.06)]">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-slate-900">Photos</label>
+                  <p className="text-sm leading-6 text-slate-500">Upload multiple images. The first one becomes the cover photo.</p>
+                </div>
+                <div className="mt-4 flex flex-wrap items-center gap-3">
                   <input type="file" accept="image/*" multiple onChange={onImageChange} aria-label="Ajouter des photos" />
-                  <div className="text-sm text-zinc-500">(Vous pouvez ajouter plusieurs images. Aperçu ci-dessous.)</div>
                 </div>
-                <div className="mt-3 grid grid-cols-3 gap-3">
-                  {images.length === 0 && <div className="text-zinc-500">Aucune photo ajoutée</div>}
+                <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                  {images.length === 0 ? <div className="text-sm text-slate-500">No photos added yet.</div> : null}
                   {images.map((img) => (
-                    <div key={img.url} className="relative">
-                      <img src={img.url} className="w-full h-28 object-cover rounded" alt="aperçu" />
-                      <button type="button" onClick={() => removeImage(img.url)} className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-6 h-6 text-xs">×</button>
+                    <div key={img.url} className="relative overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
+                      <img src={img.url} className="h-32 w-full object-cover" alt="aperçu" />
+                      <button
+                        type="button"
+                        onClick={() => removeImage(img.url)}
+                        className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-slate-950/85 text-sm text-white transition hover:bg-slate-800"
+                      >
+                        ×
+                      </button>
                     </div>
                   ))}
                 </div>
               </section>
 
-              <section>
-                <label className="text-sm font-medium">Emplacement sur la carte</label>
-                <div className="mt-2 text-sm text-zinc-500 mb-2">Cliquez sur la carte pour définir l'emplacement exact du bien (ou utilisez la géolocalisation).</div>
-                <div id="map" ref={mapRef} className="w-full h-72 rounded border border-zinc-200 dark:border-zinc-700" />
-                <div className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">Sélection: {latLng ? `${latLng.lat.toFixed(5)}, ${latLng.lng.toFixed(5)}` : "Aucun emplacement sélectionné"}</div>
+              <section className="rounded-[1.75rem] border border-slate-200 bg-white p-5 shadow-[0_18px_40px_rgba(15,23,42,0.06)]">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-slate-900">Map position</label>
+                  <p className="text-sm leading-6 text-slate-500">Click the map to set the exact location. Geolocation can center you automatically.</p>
+                </div>
+                <div id="map" ref={mapRef} className="mt-4 h-72 w-full overflow-hidden rounded-2xl border border-slate-200" />
+                <div className="mt-3 text-sm text-slate-600">
+                  Selected: {latLng ? `${latLng.lat.toFixed(5)}, ${latLng.lng.toFixed(5)}` : "No location selected"}
+                </div>
               </section>
-
-              <div className="flex gap-3 justify-end">
-                <button type="button" onClick={() => { setTitle(""); setPrice(""); setLocationText(""); setDescription(""); setImages([]); setLatLng(null); }} className="px-4 py-2 rounded border border-zinc-200 dark:border-zinc-700">Effacer</button>
-                <button type="submit" className="px-6 py-2 rounded bg-blue-600 text-white">Publier l'annonce</button>
-              </div>
-            </form>
-          </div>
+            </div>
+          </form>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

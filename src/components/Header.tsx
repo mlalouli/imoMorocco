@@ -24,9 +24,14 @@ export default function Header() {
           <Link href="/listings" className="rounded-full px-3 py-2 transition hover:bg-slate-100 hover:text-slate-950">Annonces</Link>
           <Link href="/about" className="rounded-full px-3 py-2 transition hover:bg-slate-100 hover:text-slate-950">About</Link>
           {!user ? (
-            <Link href="/login" className="rounded-full bg-slate-950 px-4 py-2 text-white transition hover:-translate-y-px hover:bg-slate-800">
-              Se connecter
-            </Link>
+            <div className="flex items-center gap-2">
+              <Link href="/login" className="rounded-full border border-slate-200 px-4 py-2 transition hover:border-slate-300 hover:bg-slate-100 hover:text-slate-950">
+                Login
+              </Link>
+              <Link href="/register" className="rounded-full bg-slate-950 px-4 py-2 text-white transition hover:-translate-y-px hover:bg-slate-800">
+                Register
+              </Link>
+            </div>
           ) : (
             <div className="flex items-center gap-2">
               <span className="hidden rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600 md:inline-flex">
